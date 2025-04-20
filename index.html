@@ -37,6 +37,7 @@
       padding: 0.8rem 1.2rem;
       font-size: 1rem;
       cursor: pointer;
+      margin-top: 1rem;
     }
     .question {
       margin: 1rem 0;
@@ -48,6 +49,16 @@
     }
     .result {
       display: none;
+      text-align: center;
+    }
+    .share {
+      margin-top: 20px;
+    }
+    .share input {
+      width: 100%;
+      padding: 0.5rem;
+      margin-top: 10px;
+      font-size: 0.9rem;
     }
   </style>
 </head>
@@ -66,21 +77,26 @@
   <div class="container result" id="result">
     <h1 id="groupName"></h1>
     <p id="groupDesc"></p>
+    <div class="share">
+      <p>👇 친구에게도 공유해보세요!</p>
+      <input type="text" value="https://oksysy.github.io/K-Pop-boygroup-test/" id="shareLink" readonly>
+      <button onclick="copyLink()">링크 복사하기</button>
+    </div>
     <button onclick="location.reload()">다시 하기</button>
   </div>
 
   <script>
     const questions = [
-      { q: "당신의 에너지는 어느 쪽에 가까운가요?", a: ["A", "B"] },
-      { q: "사람들이 당신을 어떻게 묘사하나요?", a: ["A", "B"] },
-      { q: "주말에 더 끌리는 활동은?", a: ["A", "B"] },
-      { q: "좋아하는 음악 스타일은?", a: ["A", "B"] },
-      { q: "이상형의 매력은?", a: ["A", "B"] },
-      { q: "여행 스타일은?", a: ["A", "B"] },
-      { q: "내가 팀에 있을 때의 역할은?", a: ["A", "B"] },
-      { q: "당신의 고민 해결 방식은?", a: ["A", "B"] },
-      { q: "무대 위 아이돌에게 끌리는 포인트는?", a: ["A", "B"] },
-      { q: "당신이 끌리는 세계관은?", a: ["A", "B"] },
+      { q: "당신의 에너지는 어느 쪽에 가까운가요?", a: ["차분하고 내향적", "밝고 외향적"] },
+      { q: "사람들이 당신을 어떻게 묘사하나요?", a: ["조용하고 깊은 사람", "활발하고 재밌는 사람"] },
+      { q: "주말에 더 끌리는 활동은?", a: ["혼자 조용한 시간", "친구들과 시끌벅적한 시간"] },
+      { q: "좋아하는 음악 스타일은?", a: ["감성적인 발라드나 밴드 음악", "파워풀한 댄스/힙합"] },
+      { q: "이상형의 매력은?", a: ["따뜻하고 배려심 있는", "강렬하고 섹시한"] },
+      { q: "여행 스타일은?", a: ["계획형, 안정적인 여행", "즉흥형, 모험하는 여행"] },
+      { q: "내가 팀에 있을 때의 역할은?", a: ["묵묵히 조율하고 지지", "분위기 메이커 or 리더"] },
+      { q: "당신의 고민 해결 방식은?", a: ["스스로 정리하고 생각", "주변과 소통하며 털어놓기"] },
+      { q: "무대 위 아이돌에게 끌리는 포인트는?", a: ["감정 표현과 진심", "퍼포먼스와 카리스마"] },
+      { q: "당신이 끌리는 세계관은?", a: ["현실적이고 진솔한 스토리", "상징적이고 판타지적인 스토리"] }
     ];
 
     let current = 0;
@@ -98,10 +114,10 @@
       const ans = document.getElementById('answers');
       box.innerHTML = `<h2>${questions[current].q}</h2>`;
       ans.innerHTML = '';
-      questions[current].a.forEach(option => {
+      questions[current].a.forEach((option, idx) => {
         const btn = document.createElement('button');
-        btn.innerText = option === 'A' ? '선택 A' : '선택 B';
-        btn.onclick = () => chooseAnswer(option);
+        btn.innerText = option;
+        btn.onclick = () => chooseAnswer(idx === 0 ? 'A' : 'B');
         ans.appendChild(btn);
       });
     }
@@ -143,6 +159,14 @@
       }
       document.getElementById('groupName').innerText = group;
       document.getElementById('groupDesc').innerText = desc;
+    }
+
+    function copyLink() {
+      const linkInput = document.getElementById('shareLink');
+      linkInput.select();
+      linkInput.setSelectionRange(0, 99999);
+      document.execCommand('copy');
+      alert("링크가 복사되었습니다! 친구에게 공유해보세요 ✨");
     }
   </script>
 </body>
