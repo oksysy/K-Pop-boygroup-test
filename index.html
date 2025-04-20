@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>나에게 맞는 남돌은?!</title>
+  <link href="https://fonts.googleapis.com/css2?family=Pretendard&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Pretendard', sans-serif;
+      background: #fff9fc;
+      color: #333;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .container {
+      max-width: 500px;
+      padding: 2rem;
+      background: #fff;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      border-radius: 20px;
+      margin-top: 2rem;
+    }
+    h1 {
+      color: #ff69b4;
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+    button {
+      background: #ff69b4;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      padding: 0.8rem 1.2rem;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+    .question {
+      margin: 1rem 0;
+    }
+    .answers button {
+      display: block;
+      width: 100%;
+      margin-top: 0.5rem;
+    }
+    .result {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container" id="start">
+    <h1>나에게 맞는 남돌은?!</h1>
+    <p>10개의 질문을 통해 당신과 찰떡인 K-POP 보이그룹을 알려드릴게요!</p>
+    <button onclick="startQuiz()">시작하기</button>
+  </div>
+
+  <div class="container" id="quiz" style="display:none">
+    <div id="question-box"></div>
+    <div class="answers" id="answers"></div>
+  </div>
+
+  <div class="container result" id="result">
+    <h1 id="groupName"></h1>
+    <p id="groupDesc"></p>
+    <button onclick="location.reload()">다시 하기</button>
+  </div>
+
+  <script>
+    const questions = [
+      { q: "당신의 에너지는 어느 쪽에 가까운가요?", a: ["A", "B"] },
+      { q: "사람들이 당신을 어떻게 묘사하나요?", a: ["A", "B"] },
+      { q: "주말에 더 끌리는 활동은?", a: ["A", "B"] },
+      { q: "좋아하는 음악 스타일은?", a: ["A", "B"] },
+      { q: "이상형의 매력은?", a: ["A", "B"] },
+      { q: "여행 스타일은?", a: ["A", "B"] },
+      { q: "내가 팀에 있을 때의 역할은?", a: ["A", "B"] },
+      { q: "당신의 고민 해결 방식은?", a: ["A", "B"] },
+      { q: "무대 위 아이돌에게 끌리는 포인트는?", a: ["A", "B"] },
+      { q: "당신이 끌리는 세계관은?", a: ["A", "B"] },
+    ];
+
+    let current = 0;
+    let aCount = 0;
+    let bCount = 0;
+
+    function startQuiz() {
+      document.getElementById('start').style.display = 'none';
+      document.getElementById('quiz').style.display = 'block';
+      showQuestion();
+    }
+
+    function showQuestion() {
+      const box = document.getElementById('question-box');
+      const ans = document.getElementById('answers');
+      box.innerHTML = `<h2>${questions[current].q}</h2>`;
+      ans.innerHTML = '';
+      questions[current].a.forEach(option => {
+        const btn = document.createElement('button');
+        btn.innerText = option === 'A' ? '선택 A' : '선택 B';
+        btn.onclick = () => chooseAnswer(option);
+        ans.appendChild(btn);
+      });
+    }
+
+    function chooseAnswer(choice) {
+      if (choice === 'A') aCount++;
+      else bCount++;
+      current++;
+      if (current < questions.length) showQuestion();
+      else showResult();
+    }
+
+    function showResult() {
+      document.getElementById('quiz').style.display = 'none';
+      document.getElementById('result').style.display = 'block';
+      let group = '';
+      let desc = '';
+      if (aCount > 7) {
+        group = '데이식스 (DAY6)';
+        desc = '감성적이고 진정성 있는 당신은 데이식스와 완벽한 궁합!';
+      } else if (aCount > 5) {
+        group = '투모로우바이투게더 (TXT)';
+        desc = '몽환적인 청춘 감성에 빠진 당신은 TXT와 찰떡!';
+      } else if (aCount > 3) {
+        group = '세븐틴 (SEVENTEEN)';
+        desc = '다재다능하고 팀워크 중시하는 당신에게는 세븐틴!';
+      } else if (aCount === 5) {
+        group = '방탄소년단 (BTS)';
+        desc = '열정과 감성의 밸런스를 가진 당신은 BTS 스타일!';
+      } else if (bCount > 6) {
+        group = '몬스타엑스 (MONSTA X)';
+        desc = '강렬하고 섹시한 매력에 빠진 당신, 몬스타엑스가 찰떡!';
+      } else if (bCount > 4) {
+        group = '스트레이 키즈 (Stray Kids)';
+        desc = '창의적이고 자기표현에 강한 당신에게는 스트레이 키즈!';
+      } else {
+        group = '제로베이스원 (ZEROBASEONE)';
+        desc = '신선한 매력과 팬사랑 넘치는 당신, ZB1이 제격!';
+      }
+      document.getElementById('groupName').innerText = group;
+      document.getElementById('groupDesc').innerText = desc;
+    }
+  </script>
+</body>
+</html>
